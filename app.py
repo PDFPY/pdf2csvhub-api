@@ -25,7 +25,6 @@ def extract_tables(path):
                 if not tbl:
                     continue
                 for r in tbl:
-                    # make sure it's a list of strings
                     rows.append([(cell if cell is not None else "") for cell in r])
     return rows
 
@@ -37,12 +36,12 @@ def health():
 def extract():
     """
     POST /extract
-      - file: PDF
-      - output: csv | json   (default: csv)
+      - file: PDF (required)
+      - output: csv | json (default: csv)
 
-    This version does NOT do smart bank normalization. It just:
+    This version:
       - extracts all tables it can find
-      - returns them as a flat CSV or JSON array of rows.
+      - returns them as CSV or JSON (flat list of rows).
     """
     if "file" not in request.files:
         return jsonify({"error": "file is required"}), 400
@@ -50,7 +49,7 @@ def extract():
     f = request.files["file"]
     output = request.form.get("output", "csv")
 
-    # save to a temp file
+    # save the uploaded PDF to a temp file
     with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
         f.save(tmp.name)
         pdf_path = tmp.name
@@ -71,7 +70,6 @@ def extract():
             return jsonify({"rows": 0, "message": "no tables found"})
 
     if output == "json":
-        # JSON: just return list of rows
         return jsonify({"rows": len(rows), "data": rows})
     else:
         # CSV: write to an in-memory file
