@@ -31,6 +31,59 @@ def extract_tables(path):
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({"ok": True})
+@app.route("/", methods=["GET"])
+def home():
+    return """
+    <!doctype html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>pdf2csvhub – PDF to CSV/JSON API</title>
+        <style>
+          body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; line-height: 1.6; }
+          h1 { font-size: 28px; margin-bottom: 10px; }
+          code { background: #f3f3f3; padding: 2px 4px; border-radius: 3px; }
+          .box { border: 1px solid #ddd; padding: 16px; border-radius: 8px; margin-top: 16px; }
+          .small { font-size: 13px; color: #555; }
+        </style>
+      </head>
+      <body>
+        <h1>pdf2csvhub</h1>
+        <p>Turn PDF tables (bank statements, invoices, reports) into CSV or JSON with a simple API.</p>
+
+        <div class="box">
+          <h2>Health check</h2>
+          <p>Check if the API is up:</p>
+          <pre><code>GET https://api.pdf2csvhub.com/health</code></pre>
+        </div>
+
+        <div class="box">
+          <h2>Extract tables from a PDF</h2>
+          <p>Endpoint:</p>
+          <pre><code>POST https://api.pdf2csvhub.com/extract</code></pre>
+          <p>Send as <code>multipart/form-data</code> with:</p>
+          <ul>
+            <li><code>file</code> – the PDF file (required)</li>
+            <li><code>output</code> – <code>json</code> or <code>csv</code> (optional, default <code>csv</code>)</li>
+          </ul>
+          <p>Example JSON response:</p>
+<pre><code>{
+  "rows": 4,
+  "data": [
+    ["Date","Description","Amount"],
+    ["2025-01-01","Opening Bal","1000.00"],
+    ["2025-01-03","Coffee Shop","-4.50"],
+    ["2025-01-05","Grocery Store","-32.10"]
+  ]
+}</code></pre>
+        </div>
+
+        <p class="small">
+          Support: <a href="mailto:support@pdf2csvhub.com">support@pdf2csvhub.com</a>
+        </p>
+      </body>
+    </html>
+    """
 
 @app.route("/extract", methods=["POST"])
 def extract():
@@ -91,3 +144,4 @@ def extract():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "8080"))
     app.run(host="0.0.0.0", port=port)
+
