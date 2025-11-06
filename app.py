@@ -70,37 +70,39 @@ def home():
 
           .brand-main {
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            gap: 4px;
+          }
+
+          .logo-line {
+            display: flex;
+            align-items: baseline;
             gap: 10px;
           }
 
-          .logo-mark {
-            width: 26px;
-            height: 26px;
-            border-radius: 9px;
-            background: radial-gradient(circle at top left,#38bdf8,#4f46e5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-          }
-
-          .logo-text {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-          }
-
           .logo-name {
-            font-weight: 600;
-            font-size: 17px;
-            letter-spacing: 0.02em;
+            font-weight: 700;
+            font-size: 26px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
           }
-
-          .logo-sub {
-            font-size: 11px;
-            color: #9ca3af;
+          .logo-two {
+            position: relative;
+            display: inline-block;
+            padding: 0 4px;
+            margin: 0 2px;
+            background: linear-gradient(135deg,#38bdf8,#4f46e5);
+            border-radius: 6px;
+            color: #0b1120;
+          }
+          .logo-two::after {
+            content: "→";
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            color: #38bdf8;
           }
 
           .badge {
@@ -111,7 +113,6 @@ def home():
             background: rgba(56,189,248,0.14);
             color: #a5f3fc;
             border: 1px solid rgba(56,189,248,0.7);
-            margin-top: 4px;
           }
 
           nav {
@@ -137,8 +138,8 @@ def home():
           }
 
           .big-title {
-            font-size: 30px;
-            line-height: 1.1;
+            font-size: 26px;
+            line-height: 1.15;
             margin: 0 0 8px;
           }
           .big-sub {
@@ -176,24 +177,51 @@ def home():
           }
 
           .tool-title {
-            font-size: 16px;
+            font-size: 18px;
             margin: 0 0 4px;
           }
           .tool-sub {
             font-size: 12px;
             color: #9ca3af;
-            margin: 0 0 10px;
+            margin: 0 0 14px;
           }
 
           form { margin: 0; }
 
+          .drop-label {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 6px;
+          }
+
           .drop-zone {
-            border-radius: 12px;
-            border: 1px dashed rgba(148,163,184,0.8);
-            padding: 18px 14px;
+            border-radius: 14px;
+            border: 1px dashed rgba(148,163,184,0.9);
+            padding: 22px 14px;
             background: rgba(15,23,42,0.98);
-            text-align: left;
-            font-size: 13px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background 0.15s ease;
+          }
+          .drop-zone.dragging {
+            border-color: #38bdf8;
+            background: rgba(15,23,42,1);
+          }
+          .drop-inner {
+            max-width: 360px;
+            margin: 0 auto;
+          }
+          .drop-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            border: 1px solid rgba(96,165,250,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 24px;
+            color: #bfdbfe;
           }
           .drop-main {
             font-size: 13px;
@@ -203,35 +231,14 @@ def home():
           .drop-sub {
             font-size: 12px;
             color: #9ca3af;
+            margin-bottom: 12px;
           }
-          .drop-zone input[type="file"] {
-            margin-top: 10px;
-            font-size: 12px;
-          }
-
-          .field-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 14px;
-            gap: 10px;
-            font-size: 12px;
-          }
-          .field-row select {
-            background: #020617;
-            color: #e5e7eb;
-            border-radius: 999px;
-            border: 1px solid rgba(55,65,81,0.9);
-            padding: 6px 9px;
-            font-size: 12px;
+          .file-name {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 8px;
           }
 
-          .buttons-row {
-            margin-top: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-          }
           .btn {
             display: inline-flex;
             align-items: center;
@@ -258,6 +265,35 @@ def home():
           }
           .btn-secondary:hover {
             background: rgba(15,23,42,0.9);
+          }
+          .btn-big {
+            padding: 9px 18px;
+            font-size: 13px;
+            margin-bottom: 2px;
+          }
+
+          .field-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            gap: 10px;
+            font-size: 12px;
+          }
+          .field-row select {
+            background: #020617;
+            color: #e5e7eb;
+            border-radius: 999px;
+            border: 1px solid rgba(55,65,81,0.9);
+            padding: 6px 9px;
+            font-size: 12px;
+          }
+
+          .buttons-row {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
           }
 
           .status-line {
@@ -373,12 +409,10 @@ def home():
       <body>
         <div class="shell">
           <header>
-            <div>
-              <div class="brand-main">
-                <div class="logo-mark">P</div>
-                <div class="logo-text">
-                  <div class="logo-name">pdf2csvhub</div>
-                  <div class="logo-sub">PDF → CSV / JSON for table-heavy PDFs</div>
+            <div class="brand-main">
+              <div class="logo-line">
+                <div class="logo-name">
+                  PDF <span class="logo-two">2</span> CSV HUB
                 </div>
               </div>
               <div class="badge">EARLY ACCESS · FREE WHILE IN BETA</div>
@@ -394,13 +428,19 @@ def home():
             <section id="tool">
               <div class="tool-card">
                 <h1 class="tool-title">Drop a PDF, get CSV or JSON back.</h1>
-                <p class="tool-sub">No account needed right now. Great for bank statements, invoices and reports with tables.</p>
+                <p class="tool-sub">No account needed right now. Built for bank statements, invoices and reports with tables.</p>
 
                 <form id="convertForm">
-                  <div class="drop-zone">
-                    <div class="drop-main">Choose your PDF file</div>
-                    <div class="drop-sub">Click below and pick a PDF from your computer.</div>
-                    <input type="file" name="file" id="fileInput" accept="application/pdf" required>
+                  <div class="drop-label">Upload your PDF</div>
+                  <div class="drop-zone" id="dropZone">
+                    <div class="drop-inner">
+                      <div class="drop-icon">📄</div>
+                      <div class="drop-main">Drag & drop your PDF here</div>
+                      <div class="drop-sub">or click the button below to choose a file</div>
+                      <label for="fileInput" class="btn btn-primary btn-big">Choose PDF</label>
+                      <input type="file" name="file" id="fileInput" accept="application/pdf" required hidden>
+                      <div class="file-name" id="fileName">No file selected</div>
+                    </div>
                   </div>
 
                   <div class="field-row">
@@ -460,8 +500,8 @@ def home():
             <section>
               <h2 class="big-title">Made for “just give me the rows” people.</h2>
               <p class="big-sub">
-                You shouldn&apos;t have to fight your bank or invoicing software just to get data into a spreadsheet.
-                pdf2csvhub turns table-heavy PDFs into rows you can drop into Excel, Google Sheets, or your own tools.
+                Drop in a PDF with tables, get rows you can paste into Excel, Google Sheets or your own tools.
+                No more fighting your bank or invoicing software.
               </p>
               <ul class="quick-list">
                 <li>Upload a PDF with tables.</li>
@@ -521,6 +561,8 @@ output → "json" or "csv" (optional, default "csv")</pre>
           (function() {
             const form = document.getElementById('convertForm');
             const fileInput = document.getElementById('fileInput');
+            const fileNameEl = document.getElementById('fileName');
+            const dropZone = document.getElementById('dropZone');
             const outputSelect = document.getElementById('outputSelect');
             const convertBtn = document.getElementById('convertBtn');
             const clearBtn = document.getElementById('clearBtn');
@@ -542,6 +584,46 @@ output → "json" or "csv" (optional, default "csv")</pre>
             function setStatus(msg) {
               statusText.textContent = msg || '';
             }
+
+            function updateFileName() {
+              if (!fileInput.files || !fileInput.files.length) {
+                fileNameEl.textContent = 'No file selected';
+              } else {
+                fileNameEl.textContent = fileInput.files[0].name;
+              }
+            }
+
+            fileInput.addEventListener('change', updateFileName);
+
+            // Drag & drop behavior
+            dropZone.addEventListener('click', function() {
+              fileInput.click();
+            });
+
+            dropZone.addEventListener('dragover', function(e) {
+              e.preventDefault();
+              dropZone.classList.add('dragging');
+            });
+
+            dropZone.addEventListener('dragleave', function(e) {
+              e.preventDefault();
+              dropZone.classList.remove('dragging');
+            });
+
+            dropZone.addEventListener('drop', function(e) {
+              e.preventDefault();
+              dropZone.classList.remove('dragging');
+              const files = e.dataTransfer.files;
+              if (files && files.length) {
+                const file = files[0];
+                if (file.type === 'application/pdf' || file.name.toLowerCase().endswith('.pdf')) {
+                  fileInput.files = files;
+                  updateFileName();
+                } else {
+                  setStatus('Please drop a PDF file.');
+                }
+              }
+            });
 
             function setView(mode) {
               if (mode === 'table') {
@@ -570,6 +652,7 @@ output → "json" or "csv" (optional, default "csv")</pre>
             clearBtn.addEventListener('click', function() {
               clearResult();
               fileInput.value = '';
+              updateFileName();
             });
 
             viewTableBtn.addEventListener('click', function() {
@@ -598,16 +681,16 @@ output → "json" or "csv" (optional, default "csv")</pre>
               const maxCols = Math.max(...previewRows.map(r => r.length));
               const safeHeader = headerRow.concat(Array(maxCols - headerRow.length).fill(''));
 
-              tableHead.innerHTML = '<tr>' + safeHeader.map(c => '<th>' + String(c || '') + '</th>').join('') + '</tr>';
+              tableHead.innerHTML = '<tr>' + safeHeader.map(c => '<th>' + String(c or '') + '</th>').join('') + '</tr>';
 
               tableBody.innerHTML = bodyRows.map(r => {
                 const safeRow = r.concat(Array(maxCols - r.length).fill(''));
-                return '<tr>' + safeRow.map(c => '<td>' + String(c || '') + '</td>').join('') + '</tr>';
+                return '<tr>' + safeRow.map(c => '<td>' + String(c or '') + '</td>').join('') + '</tr>';
               }).join('');
 
               if (rows.length > maxPreviewRows) {
                 const extra = rows.length - maxPreviewRows;
-                const colspan = maxCols || 1;
+                const colspan = maxCols or 1;
                 tableBody.innerHTML += '<tr><td colspan="' + colspan + '">… +' + extra + ' more row(s) not shown</td></tr>';
               }
             }
@@ -616,128 +699,7 @@ output → "json" or "csv" (optional, default "csv")</pre>
               e.preventDefault();
               clearResult();
 
-              if (!fileInput.files || !fileInput.files.length) {
-                setStatus('Please choose a PDF file first.');
-                return;
-              }
+              if (!fileInput.files or not fileInput.files.length:
+              """
 
-              const output = outputSelect.value;
-              const formData = new FormData();
-              formData.append('file', fileInput.files[0]);
-              formData.append('output', output);
-
-              convertBtn.disabled = true;
-              setStatus('Uploading and converting…');
-
-              try {
-                const resp = await fetch('/extract', {
-                  method: 'POST',
-                  body: formData
-                });
-
-                if (!resp.ok) {
-                  let text = '';
-                  try { text = await resp.text(); } catch (_) {}
-                  setStatus('Error from server: ' + resp.status + (text ? ' – ' + text.slice(0, 120) : ''));
-                  convertBtn.disabled = false;
-                  return;
-                }
-
-                if (output === 'json') {
-                  const data = await resp.json();
-                  lastData = data;
-                  const rows = typeof data.rows === 'number' ? data.rows : (Array.isArray(data.data) ? data.data.length : 0);
-                  resultMeta.textContent = ' · ' + rows + ' row(s)';
-                  let pretty = JSON.stringify(data, null, 2);
-                  if (pretty.length > 8000) {
-                    pretty = pretty.slice(0, 8000) + '\\n… (truncated preview)';
-                  }
-                  resultPre.textContent = pretty;
-
-                  renderTable(data);
-                  resultCard.style.display = 'block';
-                  setView('table');
-                  setStatus('Done. Showing preview.');
-                } else {
-                  // CSV: download as file
-                  const blob = await resp.blob();
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = 'extracted.csv';
-                  document.body.appendChild(a);
-                  a.click();
-                  a.remove();
-                  URL.revokeObjectURL(url);
-                  setStatus('CSV downloaded. Open it in Excel, Sheets, or your CSV viewer.');
-                }
-              } catch (err) {
-                console.error(err);
-                setStatus('Something went wrong while talking to the server.');
-              } finally {
-                convertBtn.disabled = false;
-              }
-            });
-          })();
-        </script>
-      </body>
-    </html>
-    """
-
-
-@app.route("/extract", methods=["POST"])
-def extract():
-    """
-    POST /extract
-      - file: PDF (required)
-      - output: csv | json (default: csv)
-    """
-    if "file" not in request.files:
-        return jsonify({"error": "file is required"}), 400
-
-    f = request.files["file"]
-    output = request.form.get("output", "csv")
-
-    # save the uploaded PDF to a temp file
-    with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
-        f.save(tmp.name)
-        pdf_path = tmp.name
-
-    try:
-        rows = extract_tables(pdf_path)
-    finally:
-        try:
-            os.unlink(pdf_path)
-        except Exception:
-            pass
-
-    if not rows:
-        # no tables found
-        if output == "json":
-            return jsonify({"rows": 0, "data": []})
-        else:
-            return jsonify({"rows": 0, "message": "no tables found"})
-
-    if output == "json":
-        return jsonify({"rows": len(rows), "data": rows})
-    else:
-        # CSV: write to an in-memory file
-        max_cols = max(len(r) for r in rows)
-        normalized = [r + [""] * (max_cols - len(r)) for r in rows]
-
-        csv_buf = io.StringIO()
-        writer = csv.writer(csv_buf)
-        writer.writerows(normalized)
-
-        mem = io.BytesIO(csv_buf.getvalue().encode("utf-8"))
-        return send_file(
-            mem,
-            as_attachment=True,
-            download_name="extracted.csv",
-            mimetype="text/csv"
-        )
-
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", "8080"))
-    app.run(host="0.0.0.0", port=port)
+::contentReference[oaicite:0]{index=0}
