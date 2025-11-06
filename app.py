@@ -17,7 +17,7 @@ def extract_tables(path):
     with pdfplumber.open(path) as pdf:
         for page in pdf.pages:
             try:
-                tables = pdf.pages[pdf.pages.index(page)].extract_tables()
+                tables = page.extract_tables()
             except Exception:
                 tables = None
             if not tables:
@@ -65,20 +65,42 @@ def home():
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
           }
 
-          .brand {
+          .brand-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          }
+
+          .logo-mark {
+            width: 26px;
+            height: 26px;
+            border-radius: 9px;
+            background: radial-gradient(circle at top left,#38bdf8,#4f46e5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+          }
+
+          .logo-text {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
           }
 
-          .logo {
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            font-size: 18px;
-            text-transform: uppercase;
+          .logo-name {
+            font-weight: 600;
+            font-size: 17px;
+            letter-spacing: 0.02em;
+          }
+
+          .logo-sub {
+            font-size: 11px;
+            color: #9ca3af;
           }
 
           .badge {
@@ -89,6 +111,7 @@ def home():
             background: rgba(56,189,248,0.14);
             color: #a5f3fc;
             border: 1px solid rgba(56,189,248,0.7);
+            margin-top: 4px;
           }
 
           nav {
@@ -103,9 +126,9 @@ def home():
 
           .layout {
             display: grid;
-            grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
-            gap: 26px;
-            align-items: stretch;
+            grid-template-columns: minmax(0, 3.2fr) minmax(0, 2.3fr);
+            gap: 24px;
+            align-items: flex-start;
           }
           @media (max-width: 900px) {
             .layout {
@@ -113,31 +136,24 @@ def home():
             }
           }
 
-          .hero-title {
-            font-size: 34px;
+          .big-title {
+            font-size: 30px;
             line-height: 1.1;
-            margin: 4px 0 10px;
+            margin: 0 0 8px;
           }
-          .hero-kicker {
-            font-size: 12px;
-            color: #9ca3af;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-          }
-          .hero-sub {
-            font-size: 14px;
-            color: #9ca3af;
-            max-width: 520px;
-          }
-          .hero-list {
-            margin-top: 16px;
-            padding-left: 18px;
+          .big-sub {
             font-size: 13px;
             color: #9ca3af;
+            margin-bottom: 12px;
+          }
+          .quick-list {
+            font-size: 12px;
+            color: #9ca3af;
+            padding-left: 16px;
+            margin: 0 0 10px;
           }
 
           .tag-row {
-            margin-top: 12px;
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
@@ -147,54 +163,46 @@ def home():
           .tag {
             padding: 3px 9px;
             border-radius: 999px;
-            border: 1px solid rgba(75,85,99,0.8);
+            border: 1px solid rgba(75,85,99,0.85);
             background: rgba(15,23,42,0.9);
           }
 
-          .upload-card {
-            background: radial-gradient(circle at top left, #1f2937, #020617);
+          .tool-card {
+            background: radial-gradient(circle at top left, #111827, #020617 70%);
             border-radius: 18px;
             padding: 18px 18px 16px;
             border: 1px solid rgba(148,163,184,0.6);
             box-shadow: 0 18px 35px rgba(0,0,0,0.6);
           }
 
-          .upload-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
+          .tool-title {
+            font-size: 16px;
+            margin: 0 0 4px;
           }
-          .upload-header h2 {
-            font-size: 15px;
-            margin: 0;
-          }
-          .pill {
-            font-size: 11px;
-            padding: 3px 10px;
-            border-radius: 999px;
-            background: rgba(22,163,74,0.1);
-            border: 1px solid rgba(34,197,94,0.6);
-            color: #bbf7d0;
+          .tool-sub {
+            font-size: 12px;
+            color: #9ca3af;
+            margin: 0 0 10px;
           }
 
-          form {
-            margin: 0;
-          }
+          form { margin: 0; }
 
           .drop-zone {
-            margin-top: 6px;
             border-radius: 12px;
-            border: 1px dashed rgba(148,163,184,0.7);
+            border: 1px dashed rgba(148,163,184,0.8);
             padding: 18px 14px;
-            background: rgba(15,23,42,0.95);
+            background: rgba(15,23,42,0.98);
             text-align: left;
             font-size: 13px;
           }
-          .drop-zone strong {
-            display: block;
+          .drop-main {
+            font-size: 13px;
+            font-weight: 500;
             margin-bottom: 4px;
+          }
+          .drop-sub {
+            font-size: 12px;
+            color: #9ca3af;
           }
           .drop-zone input[type="file"] {
             margin-top: 10px;
@@ -207,7 +215,7 @@ def home():
             justify-content: space-between;
             margin-top: 14px;
             gap: 10px;
-            font-size: 13px;
+            font-size: 12px;
           }
           .field-row select {
             background: #020617;
@@ -253,7 +261,7 @@ def home():
           }
 
           .status-line {
-            font-size: 12px;
+            font-size: 11px;
             color: #9ca3af;
             margin-top: 8px;
             min-height: 16px;
@@ -262,7 +270,7 @@ def home():
           .result-card {
             margin-top: 14px;
             border-radius: 12px;
-            background: rgba(15,23,42,0.96);
+            background: rgba(15,23,42,0.97);
             border: 1px solid rgba(31,41,55,0.9);
             padding: 10px 12px;
             font-size: 12px;
@@ -272,15 +280,67 @@ def home():
             justify-content: space-between;
             align-items: center;
             gap: 8px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
           }
-          .result-header span {
+          .result-meta {
+            font-size: 11px;
             color: #9ca3af;
           }
-          .result-body {
+
+          .view-toggle {
+            display: inline-flex;
+            border-radius: 999px;
+            border: 1px solid rgba(55,65,81,0.9);
+            overflow: hidden;
+            font-size: 11px;
+          }
+          .view-toggle button {
+            border: none;
+            background: transparent;
+            padding: 4px 10px;
+            color: #9ca3af;
+            cursor: pointer;
+          }
+          .view-toggle button.active {
+            background: rgba(37,99,235,0.25);
+            color: #e5e7eb;
+          }
+
+          .table-wrapper {
             max-height: 260px;
             overflow: auto;
+            border-radius: 8px;
+            border: 1px solid rgba(31,41,55,0.9);
+            background: rgba(15,23,42,0.98);
           }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+          }
+          thead {
+            position: sticky;
+            top: 0;
+            background: rgba(15,23,42,1);
+            z-index: 1;
+          }
+          th, td {
+            border-bottom: 1px solid rgba(31,41,55,0.9);
+            padding: 4px 6px;
+            text-align: left;
+            max-width: 240px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          th {
+            font-weight: 500;
+            color: #e5e7eb;
+          }
+          tbody tr:nth-child(even) {
+            background: rgba(15,23,42,0.92);
+          }
+
           pre {
             margin: 0;
             font-size: 11px;
@@ -292,7 +352,7 @@ def home():
           .small-note {
             font-size: 11px;
             color: #9ca3af;
-            margin-top: 8px;
+            margin-top: 6px;
           }
 
           footer {
@@ -313,55 +373,33 @@ def home():
       <body>
         <div class="shell">
           <header>
-            <div class="brand">
-              <div class="logo">pdf2csvhub</div>
+            <div>
+              <div class="brand-main">
+                <div class="logo-mark">P</div>
+                <div class="logo-text">
+                  <div class="logo-name">pdf2csvhub</div>
+                  <div class="logo-sub">PDF → CSV / JSON for table-heavy PDFs</div>
+                </div>
+              </div>
               <div class="badge">EARLY ACCESS · FREE WHILE IN BETA</div>
             </div>
             <nav>
               <a href="#tool">Converter</a>
-              <a href="#how">How it works</a>
               <a href="#api">API</a>
             </nav>
           </header>
 
           <div class="layout">
-            <!-- Left: marketing copy -->
-            <section>
-              <p class="hero-kicker">PDF ➝ CSV / JSON · TABLES ONLY</p>
-              <h1 class="hero-title">Turn bank statements & invoice PDFs into structured data in seconds.</h1>
-              <p class="hero-sub">
-                Drop in a PDF with tables and get rows back as CSV or JSON. Built for statements, invoices and
-                transaction reports — without having to write your own parser.
-              </p>
-              <ul class="hero-list">
-                <li>Perfect for Excel / Google Sheets imports.</li>
-                <li>Designed for table-heavy PDFs (statements, reports, exports).</li>
-                <li>Simple API for developers, no heavy SDKs.</li>
-              </ul>
-
-              <div class="tag-row">
-                <div class="tag">No sign-up required during beta</div>
-                <div class="tag">Free for light usage</div>
-                <div class="tag">API-ready response format</div>
-              </div>
-            </section>
-
-            <!-- Right: main tool card -->
+            <!-- Left: main tool -->
             <section id="tool">
-              <div class="upload-card">
-                <div class="upload-header">
-                  <h2>Try it now</h2>
-                  <div class="pill">Live converter</div>
-                </div>
-                <p style="margin:0; font-size:12px; color:#9ca3af;">
-                  Upload a PDF with at least one table. For best results, use digital PDFs (not blurry scans).
-                </p>
+              <div class="tool-card">
+                <h1 class="tool-title">Drop a PDF, get CSV or JSON back.</h1>
+                <p class="tool-sub">No account needed right now. Great for bank statements, invoices and reports with tables.</p>
 
                 <form id="convertForm">
                   <div class="drop-zone">
-                    <strong>PDF file</strong>
-                    <span style="font-size:12px; color:#9ca3af;">Click to choose a file from your device.</span>
-                    <br>
+                    <div class="drop-main">Choose your PDF file</div>
+                    <div class="drop-sub">Click below and pick a PDF from your computer.</div>
                     <input type="file" name="file" id="fileInput" accept="application/pdf" required>
                   </div>
 
@@ -369,13 +407,13 @@ def home():
                     <div>
                       <div style="font-size:12px; color:#9ca3af;">Output format</div>
                       <select name="output" id="outputSelect">
-                        <option value="json">JSON (preview on this page)</option>
-                        <option value="csv">CSV (download as file)</option>
+                        <option value="json">JSON (table preview + raw)</option>
+                        <option value="csv">CSV (download file)</option>
                       </select>
                     </div>
                     <div style="text-align:right; font-size:11px; color:#9ca3af;">
                       <div>Tables only · No OCR yet</div>
-                      <div>Great for statements / invoice exports</div>
+                      <div>Works best on digital PDFs</div>
                     </div>
                   </div>
 
@@ -384,7 +422,7 @@ def home():
                       Convert PDF
                     </button>
                     <button type="button" class="btn btn-secondary" id="clearBtn">
-                      Clear result
+                      Clear
                     </button>
                   </div>
 
@@ -392,40 +430,63 @@ def home():
 
                   <div class="result-card" id="resultCard" style="display:none;">
                     <div class="result-header">
-                      <strong>Result</strong>
-                      <span id="resultMeta"></span>
+                      <div>
+                        <strong>Result</strong>
+                        <span class="result-meta" id="resultMeta"></span>
+                      </div>
+                      <div class="view-toggle">
+                        <button type="button" id="viewTableBtn" class="active">Table</button>
+                        <button type="button" id="viewJsonBtn">JSON</button>
+                      </div>
                     </div>
-                    <div class="result-body">
+                    <div id="tableView" class="table-wrapper" style="display:none;">
+                      <table>
+                        <thead id="tableHead"></thead>
+                        <tbody id="tableBody"></tbody>
+                      </table>
+                    </div>
+                    <div id="jsonView" style="display:none; max-height:260px; overflow:auto; border-radius:8px; border:1px solid rgba(31,41,55,0.9); padding:8px 10px; background:rgba(15,23,42,0.98);">
                       <pre id="resultPre"></pre>
                     </div>
                     <div class="small-note">
-                      JSON is truncated in this preview if it&apos;s very large. Use the API for programmatic access.
+                      Preview shows the first few rows. Use JSON or CSV output in the API for full data.
                     </div>
                   </div>
                 </form>
               </div>
             </section>
+
+            <!-- Right: ultra-short explanation -->
+            <section>
+              <h2 class="big-title">Made for “just give me the rows” people.</h2>
+              <p class="big-sub">
+                You shouldn&apos;t have to fight your bank or invoicing software just to get data into a spreadsheet.
+                pdf2csvhub turns table-heavy PDFs into rows you can drop into Excel, Google Sheets, or your own tools.
+              </p>
+              <ul class="quick-list">
+                <li>Upload a PDF with tables.</li>
+                <li>We flatten the tables into rows.</li>
+                <li>Download CSV or work with JSON.</li>
+              </ul>
+              <div class="tag-row">
+                <div class="tag">No sign-up during beta</div>
+                <div class="tag">Free for light usage</div>
+                <div class="tag">Simple API for automation</div>
+              </div>
+            </section>
           </div>
 
-          <!-- How it works / API sections -->
-          <section id="how" class="section" style="margin-top:32px;">
-            <h2 style="font-size:18px; margin-bottom:8px;">How it works</h2>
-            <p style="font-size:13px; color:#9ca3af; max-width:520px;">
-              pdf2csvhub looks through each page of your PDF, detects tabular regions, and flattens them into rows.
-              You can export directly to CSV for spreadsheets, or work with JSON if you&apos;re integrating this into
-              an app or script.
+          <section id="api" style="margin-top:26px;">
+            <h3 style="font-size:16px; margin-bottom:6px;">API basics</h3>
+            <p style="font-size:12px; color:#9ca3af; margin-bottom:10px;">
+              Base URL: <code>https://api.pdf2csvhub.com</code>
             </p>
-          </section>
-
-          <section id="api" class="section" style="margin-top:20px;">
-            <h2 style="font-size:18px; margin-bottom:8px;">API usage</h2>
-            <p style="font-size:13px; color:#9ca3af;">Base URL: <code>https://api.pdf2csvhub.com</code></p>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; margin-top:10px;">
-              <div style="border-radius:12px; padding:10px 12px; background:rgba(15,23,42,0.96); border:1px solid rgba(31,41,55,0.9); font-size:12px;">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; font-size:12px;">
+              <div style="border-radius:10px; padding:9px 11px; background:rgba(15,23,42,0.97); border:1px solid rgba(31,41,55,0.9);">
                 <strong>Health check</strong>
                 <pre>{ "method": "GET", "path": "/health" }</pre>
               </div>
-              <div style="border-radius:12px; padding:10px 12px; background:rgba(15,23,42,0.96); border:1px solid rgba(31,41,55,0.9); font-size:12px;">
+              <div style="border-radius:10px; padding:9px 11px; background:rgba(15,23,42,0.97); border:1px solid rgba(31,41,55,0.9);">
                 <strong>Extract tables</strong>
                 <pre>POST /extract
 Content-Type: multipart/form-data
@@ -433,8 +494,8 @@ Content-Type: multipart/form-data
 file   → PDF file (required)
 output → "json" or "csv" (optional, default "csv")</pre>
               </div>
-              <div style="border-radius:12px; padding:10px 12px; background:rgba(15,23,42,0.96); border:1px solid rgba(31,41,55,0.9); font-size:12px;">
-                <strong>Example response (JSON)</strong>
+              <div style="border-radius:10px; padding:9px 11px; background:rgba(15,23,42,0.97); border:1px solid rgba(31,41,55,0.9);">
+                <strong>Example JSON response</strong>
                 <pre>{
   "rows": 4,
   "data": [
@@ -464,18 +525,45 @@ output → "json" or "csv" (optional, default "csv")</pre>
             const convertBtn = document.getElementById('convertBtn');
             const clearBtn = document.getElementById('clearBtn');
             const statusText = document.getElementById('statusText');
+
             const resultCard = document.getElementById('resultCard');
-            const resultPre = document.getElementById('resultPre');
             const resultMeta = document.getElementById('resultMeta');
+            const resultPre = document.getElementById('resultPre');
+
+            const tableView = document.getElementById('tableView');
+            const jsonView = document.getElementById('jsonView');
+            const tableHead = document.getElementById('tableHead');
+            const tableBody = document.getElementById('tableBody');
+            const viewTableBtn = document.getElementById('viewTableBtn');
+            const viewJsonBtn = document.getElementById('viewJsonBtn');
+
+            let lastData = null;
 
             function setStatus(msg) {
               statusText.textContent = msg || '';
             }
 
+            function setView(mode) {
+              if (mode === 'table') {
+                tableView.style.display = 'block';
+                jsonView.style.display = 'none';
+                viewTableBtn.classList.add('active');
+                viewJsonBtn.classList.remove('active');
+              } else {
+                tableView.style.display = 'none';
+                jsonView.style.display = 'block';
+                viewJsonBtn.classList.add('active');
+                viewTableBtn.classList.remove('active');
+              }
+            }
+
             function clearResult() {
               resultCard.style.display = 'none';
-              resultPre.textContent = '';
               resultMeta.textContent = '';
+              resultPre.textContent = '';
+              tableHead.innerHTML = '';
+              tableBody.innerHTML = '';
+              lastData = null;
               setStatus('');
             }
 
@@ -483,6 +571,46 @@ output → "json" or "csv" (optional, default "csv")</pre>
               clearResult();
               fileInput.value = '';
             });
+
+            viewTableBtn.addEventListener('click', function() {
+              if (!lastData) return;
+              setView('table');
+            });
+
+            viewJsonBtn.addEventListener('click', function() {
+              if (!lastData) return;
+              setView('json');
+            });
+
+            function renderTable(data) {
+              const rows = Array.isArray(data.data) ? data.data : [];
+              if (!rows.length) {
+                tableHead.innerHTML = '<tr><th>No rows found</th></tr>';
+                tableBody.innerHTML = '';
+                return;
+              }
+
+              const maxPreviewRows = 12;
+              const previewRows = rows.slice(0, maxPreviewRows);
+              const headerRow = previewRows[0] || [];
+              const bodyRows = previewRows.slice(1);
+
+              const maxCols = Math.max(...previewRows.map(r => r.length));
+              const safeHeader = headerRow.concat(Array(maxCols - headerRow.length).fill(''));
+
+              tableHead.innerHTML = '<tr>' + safeHeader.map(c => '<th>' + String(c || '') + '</th>').join('') + '</tr>';
+
+              tableBody.innerHTML = bodyRows.map(r => {
+                const safeRow = r.concat(Array(maxCols - r.length).fill(''));
+                return '<tr>' + safeRow.map(c => '<td>' + String(c || '') + '</td>').join('') + '</tr>';
+              }).join('');
+
+              if (rows.length > maxPreviewRows) {
+                const extra = rows.length - maxPreviewRows;
+                const colspan = maxCols || 1;
+                tableBody.innerHTML += '<tr><td colspan="' + colspan + '">… +' + extra + ' more row(s) not shown</td></tr>';
+              }
+            }
 
             form.addEventListener('submit', async function(e) {
               e.preventDefault();
@@ -499,7 +627,7 @@ output → "json" or "csv" (optional, default "csv")</pre>
               formData.append('output', output);
 
               convertBtn.disabled = true;
-              setStatus('Uploading and converting...');
+              setStatus('Uploading and converting…');
 
               try {
                 const resp = await fetch('/extract', {
@@ -517,15 +645,19 @@ output → "json" or "csv" (optional, default "csv")</pre>
 
                 if (output === 'json') {
                   const data = await resp.json();
-                  const rows = typeof data.rows === 'number' ? data.rows : 'unknown';
-                  resultMeta.textContent = rows + ' row(s)';
+                  lastData = data;
+                  const rows = typeof data.rows === 'number' ? data.rows : (Array.isArray(data.data) ? data.data.length : 0);
+                  resultMeta.textContent = ' · ' + rows + ' row(s)';
                   let pretty = JSON.stringify(data, null, 2);
                   if (pretty.length > 8000) {
-                    pretty = pretty.slice(0, 8000) + '\\n... (truncated preview)';
+                    pretty = pretty.slice(0, 8000) + '\\n… (truncated preview)';
                   }
                   resultPre.textContent = pretty;
+
+                  renderTable(data);
                   resultCard.style.display = 'block';
-                  setStatus('Done. Showing JSON preview.');
+                  setView('table');
+                  setStatus('Done. Showing preview.');
                 } else {
                   // CSV: download as file
                   const blob = await resp.blob();
