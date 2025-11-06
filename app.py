@@ -17,7 +17,7 @@ def extract_tables(path):
     with pdfplumber.open(path) as pdf:
         for page in pdf.pages:
             try:
-                tables = page.extract_tables()
+                tables = pdf.pages[pdf.pages.index(page)].extract_tables()
             except Exception:
                 tables = None
             if not tables:
@@ -42,87 +42,196 @@ def home():
     <html>
       <head>
         <meta charset="utf-8">
-        <title>pdf2csvhub – PDF to CSV/JSON API</title>
+        <title>pdf2csvhub – PDF to CSV/JSON</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
           * { box-sizing: border-box; }
           body {
             margin: 0;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #050816;
-            color: #f9fafb;
+            background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #000 100%);
+            color: #e5e7eb;
           }
-          a { color: inherit; }
-          .wrapper {
+          a { color: inherit; text-decoration: none; }
+
+          .shell {
             max-width: 1040px;
             margin: 0 auto;
-            padding: 32px 16px 40px;
+            padding: 24px 16px 40px;
           }
+
           header {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 12px;
             margin-bottom: 32px;
           }
+
+          .brand {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+          }
+
           .logo {
             font-weight: 700;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.08em;
             font-size: 18px;
+            text-transform: uppercase;
           }
+
           .badge {
             display: inline-block;
             padding: 3px 10px;
             border-radius: 999px;
             font-size: 11px;
-            background: rgba(96,165,250,0.12);
-            color: #bfdbfe;
-            border: 1px solid rgba(96,165,250,0.4);
+            background: rgba(56,189,248,0.14);
+            color: #a5f3fc;
+            border: 1px solid rgba(56,189,248,0.7);
+          }
+
+          nav {
+            font-size: 13px;
+            color: #9ca3af;
           }
           nav a {
-            font-size: 14px;
-            margin-left: 16px;
-            text-decoration: none;
-            color: #e5e7eb;
+            margin-left: 14px;
             opacity: 0.9;
           }
-          nav a:hover { opacity: 1; }
+          nav a:hover { opacity: 1; color: #e5e7eb; }
 
-          .hero {
+          .layout {
             display: grid;
-            grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
-            gap: 32px;
-            align-items: center;
-            margin-bottom: 40px;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
+            gap: 26px;
+            align-items: stretch;
           }
-          @media (max-width: 800px) {
-            .hero {
+          @media (max-width: 900px) {
+            .layout {
               grid-template-columns: minmax(0, 1fr);
             }
           }
+
           .hero-title {
             font-size: 34px;
             line-height: 1.1;
-            margin: 12px 0 12px;
+            margin: 4px 0 10px;
+          }
+          .hero-kicker {
+            font-size: 12px;
+            color: #9ca3af;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
           }
           .hero-sub {
-            font-size: 15px;
+            font-size: 14px;
             color: #9ca3af;
             max-width: 520px;
           }
-          .hero-buttons {
-            margin-top: 18px;
+          .hero-list {
+            margin-top: 16px;
+            padding-left: 18px;
+            font-size: 13px;
+            color: #9ca3af;
+          }
+
+          .tag-row {
+            margin-top: 12px;
             display: flex;
             flex-wrap: wrap;
+            gap: 8px;
+            font-size: 11px;
+            color: #9ca3af;
+          }
+          .tag {
+            padding: 3px 9px;
+            border-radius: 999px;
+            border: 1px solid rgba(75,85,99,0.8);
+            background: rgba(15,23,42,0.9);
+          }
+
+          .upload-card {
+            background: radial-gradient(circle at top left, #1f2937, #020617);
+            border-radius: 18px;
+            padding: 18px 18px 16px;
+            border: 1px solid rgba(148,163,184,0.6);
+            box-shadow: 0 18px 35px rgba(0,0,0,0.6);
+          }
+
+          .upload-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+          }
+          .upload-header h2 {
+            font-size: 15px;
+            margin: 0;
+          }
+          .pill {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: rgba(22,163,74,0.1);
+            border: 1px solid rgba(34,197,94,0.6);
+            color: #bbf7d0;
+          }
+
+          form {
+            margin: 0;
+          }
+
+          .drop-zone {
+            margin-top: 6px;
+            border-radius: 12px;
+            border: 1px dashed rgba(148,163,184,0.7);
+            padding: 18px 14px;
+            background: rgba(15,23,42,0.95);
+            text-align: left;
+            font-size: 13px;
+          }
+          .drop-zone strong {
+            display: block;
+            margin-bottom: 4px;
+          }
+          .drop-zone input[type="file"] {
+            margin-top: 10px;
+            font-size: 12px;
+          }
+
+          .field-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 14px;
+            gap: 10px;
+            font-size: 13px;
+          }
+          .field-row select {
+            background: #020617;
+            color: #e5e7eb;
+            border-radius: 999px;
+            border: 1px solid rgba(55,65,81,0.9);
+            padding: 6px 9px;
+            font-size: 12px;
+          }
+
+          .buttons-row {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
             gap: 10px;
           }
           .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 9px 16px;
+            padding: 8px 16px;
             border-radius: 999px;
-            font-size: 14px;
+            font-size: 13px;
             border: 1px solid transparent;
-            text-decoration: none;
             cursor: pointer;
           }
           .btn-primary {
@@ -130,166 +239,203 @@ def home():
             color: white;
             border-color: transparent;
           }
-          .btn-primary:hover {
-            filter: brightness(1.08);
+          .btn-primary[disabled] {
+            opacity: 0.5;
+            cursor: default;
           }
-          .btn-ghost {
+          .btn-secondary {
             background: transparent;
-            border-color: rgba(148,163,184,0.6);
+            border-color: rgba(148,163,184,0.7);
             color: #e5e7eb;
           }
-          .btn-ghost:hover {
-            background: rgba(148,163,184,0.08);
+          .btn-secondary:hover {
+            background: rgba(15,23,42,0.9);
           }
 
-          .hero-card {
-            background: radial-gradient(circle at top left,#1f2937,#020617);
-            border-radius: 16px;
-            padding: 18px 18px 16px;
-            border: 1px solid rgba(148,163,184,0.4);
+          .status-line {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 8px;
+            min-height: 16px;
+          }
+
+          .result-card {
+            margin-top: 14px;
+            border-radius: 12px;
+            background: rgba(15,23,42,0.96);
+            border: 1px solid rgba(31,41,55,0.9);
+            padding: 10px 12px;
             font-size: 12px;
           }
-          .hero-card h3 {
-            font-size: 12px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
+          .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+          }
+          .result-header span {
             color: #9ca3af;
-            margin: 0 0 6px;
+          }
+          .result-body {
+            max-height: 260px;
+            overflow: auto;
           }
           pre {
-            background: rgba(15,23,42,0.9);
-            border-radius: 10px;
-            padding: 10px 12px;
-            overflow-x: auto;
-            border: 1px solid rgba(31,41,55,0.9);
+            margin: 0;
             font-size: 11px;
             line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
           }
 
-          .section {
-            margin-top: 32px;
-          }
-          .section h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
-          }
-          .muted {
-            font-size: 13px;
+          .small-note {
+            font-size: 11px;
             color: #9ca3af;
-            max-width: 520px;
-          }
-          .cards {
-            display: grid;
-            grid-template-columns: repeat(3,minmax(0,1fr));
-            gap: 14px;
-            margin-top: 14px;
-          }
-          @media (max-width: 900px) {
-            .cards { grid-template-columns: repeat(2,minmax(0,1fr)); }
-          }
-          @media (max-width: 640px) {
-            .cards { grid-template-columns: minmax(0,1fr); }
-          }
-          .card {
-            border-radius: 12px;
-            padding: 12px 12px 13px;
-            background: rgba(15,23,42,0.96);
-            border: 1px solid rgba(31,41,55,0.95);
-            font-size: 13px;
-          }
-          .card h3 {
-            font-size: 14px;
-            margin: 0 0 6px;
-          }
-          .card p {
-            margin: 0;
-            color: #9ca3af;
+            margin-top: 8px;
           }
 
-          .pricing-row {
-            display: grid;
-            grid-template-columns: minmax(0,1.2fr) minmax(0,2fr);
-            gap: 18px;
-            margin-top: 16px;
-          }
-          @media (max-width: 700px) {
-            .pricing-row { grid-template-columns: minmax(0,1fr); }
-          }
-          .pricing-card {
-            border-radius: 12px;
-            padding: 14px 14px 13px;
-            background: rgba(15,23,42,0.96);
-            border: 1px solid rgba(55,65,81,0.9);
-          }
-          .price-tag {
-            font-size: 22px;
-            font-weight: 600;
-          }
-          .price-tag span {
-            font-size: 12px;
-            font-weight: 400;
-            color: #9ca3af;
-          }
-          ul {
-            padding-left: 18px;
-          }
           footer {
-            margin-top: 36px;
+            margin-top: 32px;
+            padding-top: 10px;
             border-top: 1px solid rgba(31,41,55,0.9);
-            padding-top: 12px;
-            font-size: 12px;
+            font-size: 11px;
             color: #6b7280;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 8px;
           }
-          footer a {
-            color: #9ca3af;
-            text-decoration: none;
-          }
+          footer a { color: #9ca3af; }
           footer a:hover { color: #e5e7eb; }
         </style>
       </head>
       <body>
-        <div class="wrapper">
+        <div class="shell">
           <header>
-            <div>
+            <div class="brand">
               <div class="logo">pdf2csvhub</div>
-              <div class="badge">EARLY ACCESS · FREE DURING BETA</div>
+              <div class="badge">EARLY ACCESS · FREE WHILE IN BETA</div>
             </div>
             <nav>
+              <a href="#tool">Converter</a>
               <a href="#how">How it works</a>
               <a href="#api">API</a>
-              <a href="#pricing">Pricing</a>
-              <a href="/demo">Live demo</a>
             </nav>
           </header>
 
-          <section class="hero">
-            <div>
-              <p style="font-size:12px; color:#9ca3af; margin:0 0 4px;">PDF → CSV/JSON in one call</p>
-              <h1 class="hero-title">Turn bank statements & invoice PDFs into data you can actually use.</h1>
+          <div class="layout">
+            <!-- Left: marketing copy -->
+            <section>
+              <p class="hero-kicker">PDF ➝ CSV / JSON · TABLES ONLY</p>
+              <h1 class="hero-title">Turn bank statements & invoice PDFs into structured data in seconds.</h1>
               <p class="hero-sub">
-                Upload a PDF with tables and get clean rows back as CSV or JSON.
-                Designed for statements, invoices and transaction reports — without writing your own parser.
+                Drop in a PDF with tables and get rows back as CSV or JSON. Built for statements, invoices and
+                transaction reports — without having to write your own parser.
               </p>
-              <div class="hero-buttons">
-                <a class="btn btn-primary" href="/demo">Try the live demo</a>
-                <a class="btn btn-ghost" href="#api">View API usage</a>
-              </div>
-            </div>
+              <ul class="hero-list">
+                <li>Perfect for Excel / Google Sheets imports.</li>
+                <li>Designed for table-heavy PDFs (statements, reports, exports).</li>
+                <li>Simple API for developers, no heavy SDKs.</li>
+              </ul>
 
-            <div class="hero-card">
-              <h3>API EXAMPLE</h3>
-              <pre><code>POST https://api.pdf2csvhub.com/extract
+              <div class="tag-row">
+                <div class="tag">No sign-up required during beta</div>
+                <div class="tag">Free for light usage</div>
+                <div class="tag">API-ready response format</div>
+              </div>
+            </section>
+
+            <!-- Right: main tool card -->
+            <section id="tool">
+              <div class="upload-card">
+                <div class="upload-header">
+                  <h2>Try it now</h2>
+                  <div class="pill">Live converter</div>
+                </div>
+                <p style="margin:0; font-size:12px; color:#9ca3af;">
+                  Upload a PDF with at least one table. For best results, use digital PDFs (not blurry scans).
+                </p>
+
+                <form id="convertForm">
+                  <div class="drop-zone">
+                    <strong>PDF file</strong>
+                    <span style="font-size:12px; color:#9ca3af;">Click to choose a file from your device.</span>
+                    <br>
+                    <input type="file" name="file" id="fileInput" accept="application/pdf" required>
+                  </div>
+
+                  <div class="field-row">
+                    <div>
+                      <div style="font-size:12px; color:#9ca3af;">Output format</div>
+                      <select name="output" id="outputSelect">
+                        <option value="json">JSON (preview on this page)</option>
+                        <option value="csv">CSV (download as file)</option>
+                      </select>
+                    </div>
+                    <div style="text-align:right; font-size:11px; color:#9ca3af;">
+                      <div>Tables only · No OCR yet</div>
+                      <div>Great for statements / invoice exports</div>
+                    </div>
+                  </div>
+
+                  <div class="buttons-row">
+                    <button type="submit" class="btn btn-primary" id="convertBtn">
+                      Convert PDF
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="clearBtn">
+                      Clear result
+                    </button>
+                  </div>
+
+                  <div class="status-line" id="statusText"></div>
+
+                  <div class="result-card" id="resultCard" style="display:none;">
+                    <div class="result-header">
+                      <strong>Result</strong>
+                      <span id="resultMeta"></span>
+                    </div>
+                    <div class="result-body">
+                      <pre id="resultPre"></pre>
+                    </div>
+                    <div class="small-note">
+                      JSON is truncated in this preview if it&apos;s very large. Use the API for programmatic access.
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+          </div>
+
+          <!-- How it works / API sections -->
+          <section id="how" class="section" style="margin-top:32px;">
+            <h2 style="font-size:18px; margin-bottom:8px;">How it works</h2>
+            <p style="font-size:13px; color:#9ca3af; max-width:520px;">
+              pdf2csvhub looks through each page of your PDF, detects tabular regions, and flattens them into rows.
+              You can export directly to CSV for spreadsheets, or work with JSON if you&apos;re integrating this into
+              an app or script.
+            </p>
+          </section>
+
+          <section id="api" class="section" style="margin-top:20px;">
+            <h2 style="font-size:18px; margin-bottom:8px;">API usage</h2>
+            <p style="font-size:13px; color:#9ca3af;">Base URL: <code>https://api.pdf2csvhub.com</code></p>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; margin-top:10px;">
+              <div style="border-radius:12px; padding:10px 12px; background:rgba(15,23,42,0.96); border:1px solid rgba(31,41,55,0.9); font-size:12px;">
+                <strong>Health check</strong>
+                <pre>{ "method": "GET", "path": "/health" }</pre>
+              </div>
+              <div style="border-radius:12px; padding:10px 12px; background:rgba(15,23,42,0.96); border:1px solid rgba(31,41,55,0.9); font-size:12px;">
+                <strong>Extract tables</strong>
+                <pre>POST /extract
 Content-Type: multipart/form-data
 
-file   = &lt;your PDF file&gt;
-output = json  # or csv
-
-# response (example)
-{
+file   → PDF file (required)
+output → "json" or "csv" (optional, default "csv")</pre>
+              </div>
+              <div style="border-radius:12px; padding:10px 12px; background:rgba(15,23,42,0.96); border:1px solid rgba(31,41,55,0.9); font-size:12px;">
+                <strong>Example response (JSON)</strong>
+                <pre>{
   "rows": 4,
   "data": [
     ["Date","Description","Amount"],
@@ -297,87 +443,7 @@ output = json  # or csv
     ["2025-01-03","Coffee Shop","-4.50"],
     ["2025-01-05","Grocery Store","-32.10"]
   ]
-}</code></pre>
-            </div>
-          </section>
-
-          <section id="how" class="section">
-            <h2>Who it&apos;s for &amp; how it helps</h2>
-            <p class="muted">
-              pdf2csvhub is for people sitting on piles of PDF statements or reports who just want a structured file
-              they can drop into Excel, Google Sheets or a database.
-            </p>
-            <div class="cards">
-              <div class="card">
-                <h3>Analysts & operators</h3>
-                <p>Stop copy-pasting tables out of PDFs. Upload once, export CSV, and move on to the actual analysis.</p>
-              </div>
-              <div class="card">
-                <h3>Developers</h3>
-                <p>Need transaction data from a PDF in your app? Call the API and get JSON back in one step.</p>
-              </div>
-              <div class="card">
-                <h3>Bookkeeping & finance</h3>
-                <p>Turn client statements and invoices into rows you can import into your accounting tools.</p>
-              </div>
-            </div>
-          </section>
-
-          <section id="api" class="section">
-            <h2>API usage</h2>
-            <p class="muted">Base URL: <code>https://api.pdf2csvhub.com</code></p>
-
-            <div class="cards">
-              <div class="card">
-                <h3>Health check</h3>
-<pre><code>GET /health
-
-# response
-{"ok": true}</code></pre>
-              </div>
-              <div class="card">
-                <h3>Extract tables</h3>
-<pre><code>POST /extract
-Content-Type: multipart/form-data
-
-file   → PDF file (required)
-output → "json" or "csv" (optional, default "csv")</code></pre>
-              </div>
-              <div class="card">
-                <h3>Typical flow</h3>
-                <p style="margin-bottom:4px;">1. Upload a statement or invoice PDF.</p>
-                <p style="margin-bottom:4px;">2. We detect tables and extract rows.</p>
-                <p>3. Save as CSV or work directly with JSON.</p>
-              </div>
-            </div>
-          </section>
-
-          <section id="pricing" class="section">
-            <h2>Pricing</h2>
-            <p class="muted">
-              Early access is free while the service is in beta. Paid plans for heavier API usage are coming soon.
-            </p>
-            <div class="pricing-row">
-              <div class="pricing-card">
-                <div class="price-tag">Free <span>· during beta</span></div>
-                <ul>
-                  <li>Use the live demo for small/occasional files.</li>
-                  <li>Reasonable API usage while we test and improve extraction.</li>
-                  <li>Good way to see if it fits your workflow.</li>
-                </ul>
-                <a class="btn btn-primary" href="/demo">Start with the demo</a>
-              </div>
-              <div class="pricing-card">
-                <div class="price-tag">$19/mo <span>· planned starter plan</span></div>
-                <ul>
-                  <li>Intended for up to ~5,000 pages/month.</li>
-                  <li>Priority on improvements around your use case.</li>
-                  <li>API keys and metering will be added as beta solidifies.</li>
-                </ul>
-                <p style="font-size:13px; color:#9ca3af;">
-                  Interested in early paid access or higher volumes?
-                  Email <a href="mailto:support@pdf2csvhub.com">support@pdf2csvhub.com</a> briefly describing your use case.
-                </p>
+}</pre>
               </div>
             </div>
           </section>
@@ -385,90 +451,103 @@ output → "json" or "csv" (optional, default "csv")</code></pre>
           <footer>
             <div>© pdf2csvhub · Early access</div>
             <div>
-              <a href="/demo">Live demo</a> ·
               <a href="mailto:support@pdf2csvhub.com">Contact</a>
             </div>
           </footer>
         </div>
-      </body>
-    </html>
-    """
 
+        <script>
+          (function() {
+            const form = document.getElementById('convertForm');
+            const fileInput = document.getElementById('fileInput');
+            const outputSelect = document.getElementById('outputSelect');
+            const convertBtn = document.getElementById('convertBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const statusText = document.getElementById('statusText');
+            const resultCard = document.getElementById('resultCard');
+            const resultPre = document.getElementById('resultPre');
+            const resultMeta = document.getElementById('resultMeta');
 
-@app.route("/demo", methods=["GET"])
-def demo():
-    return """
-    <!doctype html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <title>pdf2csvhub Demo</title>
-        <style>
-          body {
-            margin: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #020617;
-            color: #e5e7eb;
-          }
-          .wrapper {
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 32px 16px 40px;
-          }
-          h1 { font-size: 24px; margin-bottom: 6px; }
-          p { font-size: 14px; color: #9ca3af; }
-          label { display: block; margin-top: 14px; font-size: 14px; }
-          input[type="file"], select {
-            margin-top: 4px;
-            font-size: 14px;
-          }
-          button {
-            margin-top: 18px;
-            padding: 8px 16px;
-            border-radius: 999px;
-            border: 1px solid transparent;
-            background: linear-gradient(135deg,#4f46e5,#06b6d4);
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-          }
-          button:hover { filter: brightness(1.08); }
-          a { color: #9ca3af; }
-          .note { font-size: 12px; color: #9ca3af; margin-top: 18px; }
-        </style>
-      </head>
-      <body>
-        <div class="wrapper">
-          <h1>pdf2csvhub Demo</h1>
-          <p>Upload a PDF with tables and get CSV or JSON back from the API.</p>
+            function setStatus(msg) {
+              statusText.textContent = msg || '';
+            }
 
-          <form action="/extract" method="post" enctype="multipart/form-data">
-            <label>
-              PDF file:
-              <input type="file" name="file" required>
-            </label>
+            function clearResult() {
+              resultCard.style.display = 'none';
+              resultPre.textContent = '';
+              resultMeta.textContent = '';
+              setStatus('');
+            }
 
-            <label>
-              Output format:
-              <select name="output">
-                <option value="json">JSON (view in browser)</option>
-                <option value="csv">CSV (download file)</option>
-              </select>
-            </label>
+            clearBtn.addEventListener('click', function() {
+              clearResult();
+              fileInput.value = '';
+            });
 
-            <button type="submit">Convert</button>
-          </form>
+            form.addEventListener('submit', async function(e) {
+              e.preventDefault();
+              clearResult();
 
-          <p class="note">
-            This uses the same endpoint your code would call:
-            <code>POST https://api.pdf2csvhub.com/extract</code>.
-          </p>
+              if (!fileInput.files || !fileInput.files.length) {
+                setStatus('Please choose a PDF file first.');
+                return;
+              }
 
-          <p class="note">
-            For feedback or issues, email
-            <a href="mailto:support@pdf2csvhub.com">support@pdf2csvhub.com</a>.
-          </p>
-        </div>
+              const output = outputSelect.value;
+              const formData = new FormData();
+              formData.append('file', fileInput.files[0]);
+              formData.append('output', output);
+
+              convertBtn.disabled = true;
+              setStatus('Uploading and converting...');
+
+              try {
+                const resp = await fetch('/extract', {
+                  method: 'POST',
+                  body: formData
+                });
+
+                if (!resp.ok) {
+                  let text = '';
+                  try { text = await resp.text(); } catch (_) {}
+                  setStatus('Error from server: ' + resp.status + (text ? ' – ' + text.slice(0, 120) : ''));
+                  convertBtn.disabled = false;
+                  return;
+                }
+
+                if (output === 'json') {
+                  const data = await resp.json();
+                  const rows = typeof data.rows === 'number' ? data.rows : 'unknown';
+                  resultMeta.textContent = rows + ' row(s)';
+                  let pretty = JSON.stringify(data, null, 2);
+                  if (pretty.length > 8000) {
+                    pretty = pretty.slice(0, 8000) + '\\n... (truncated preview)';
+                  }
+                  resultPre.textContent = pretty;
+                  resultCard.style.display = 'block';
+                  setStatus('Done. Showing JSON preview.');
+                } else {
+                  // CSV: download as file
+                  const blob = await resp.blob();
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'extracted.csv';
+                  document.body.appendChild(a);
+                  a.click();
+                  a.remove();
+                  URL.revokeObjectURL(url);
+                  setStatus('CSV downloaded. Open it in Excel, Sheets, or your CSV viewer.');
+                }
+              } catch (err) {
+                console.error(err);
+                setStatus('Something went wrong while talking to the server.');
+              } finally {
+                convertBtn.disabled = false;
+              }
+            });
+          })();
+        </script>
       </body>
     </html>
     """
