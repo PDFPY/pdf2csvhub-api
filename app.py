@@ -33,6 +33,49 @@ def health():
     return jsonify({"ok": True})
 @app.route("/", methods=["GET"])
 def home():
+    @app.route("/demo", methods=["GET"])
+def demo():
+    return """
+    <!doctype html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>pdf2csvhub Demo</title>
+        <style>
+          body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; line-height: 1.6; }
+          h1 { font-size: 24px; margin-bottom: 10px; }
+          label { display: block; margin-top: 12px; }
+          button { margin-top: 16px; padding: 8px 16px; }
+        </style>
+      </head>
+      <body>
+        <h1>pdf2csvhub Demo</h1>
+        <p>Upload a PDF with tables and get CSV or JSON back from the API.</p>
+
+        <form action="/extract" method="post" enctype="multipart/form-data">
+          <label>
+            PDF file:
+            <input type="file" name="file" required>
+          </label>
+
+          <label>
+            Output format:
+            <select name="output">
+              <option value="json">JSON (view in browser)</option>
+              <option value="csv">CSV (download file)</option>
+            </select>
+          </label>
+
+          <button type="submit">Convert</button>
+        </form>
+
+        <p style="font-size: 13px; color: #555; margin-top: 24px;">
+          This form calls <code>POST /extract</code> on this same server.
+        </p>
+      </body>
+    </html>
+    """
+
     return """
     <!doctype html>
     <html>
@@ -144,4 +187,5 @@ def extract():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "8080"))
     app.run(host="0.0.0.0", port=port)
+
 
