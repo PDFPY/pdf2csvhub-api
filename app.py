@@ -44,32 +44,71 @@ def home():
         <meta charset="utf-8">
         <title>pdf2csvhub – PDF to CSV/JSON API</title>
         <style>
-          body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; line-height: 1.6; }
-          h1 { font-size: 28px; margin-bottom: 10px; }
+          body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; line-height: 1.6; }
+          h1 { font-size: 30px; margin-bottom: 4px; }
+          h2 { font-size: 22px; margin-top: 24px; }
           code { background: #f3f3f3; padding: 2px 4px; border-radius: 3px; }
+          .tagline { color: #444; margin-bottom: 20px; }
           .box { border: 1px solid #ddd; padding: 16px; border-radius: 8px; margin-top: 16px; }
           .small { font-size: 13px; color: #555; }
+          a.button {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            text-decoration: none;
+            color: #fff;
+            background: #333;
+            margin-top: 8px;
+          }
+          a.button:hover { background: #000; }
         </style>
       </head>
       <body>
         <h1>pdf2csvhub</h1>
-        <p>Turn PDF tables (bank statements, invoices, reports) into CSV or JSON with a simple API.</p>
+        <p class="tagline">
+          Turn PDF tables (bank statements, invoices, reports) into clean CSV or JSON with a simple API.
+        </p>
 
         <div class="box">
-          <h2>Health check</h2>
-          <p>Check if the API is up:</p>
-          <pre><code>GET https://api.pdf2csvhub.com/health</code></pre>
+          <h2>Who this is for</h2>
+          <ul>
+            <li>People with bank statements, invoices, or reports stuck in PDF</li>
+            <li>Who want the data in Excel/Sheets quickly</li>
+            <li>And don&apos;t want to manually copy/paste tables</li>
+          </ul>
         </div>
 
         <div class="box">
-          <h2>Extract tables from a PDF</h2>
-          <p>Endpoint:</p>
-          <pre><code>POST https://api.pdf2csvhub.com/extract</code></pre>
-          <p>Send as <code>multipart/form-data</code> with:</p>
-          <ul>
-            <li><code>file</code> – the PDF file (required)</li>
-            <li><code>output</code> – <code>json</code> or <code>csv</code> (optional, default <code>csv</code>)</li>
-          </ul>
+          <h2>How it works</h2>
+          <ol>
+            <li>Upload a PDF with tables.</li>
+            <li>We detect the tables and extract the rows.</li>
+            <li>You get back CSV (download) or JSON (for code).</li>
+          </ol>
+          <p>
+            Try it in your browser:
+            <br>
+            <a class="button" href="/demo">Open the demo</a>
+          </p>
+        </div>
+
+        <div class="box">
+          <h2>API usage</h2>
+          <p>Base URL: <code>https://api.pdf2csvhub.com</code></p>
+
+          <p><strong>Health check</strong></p>
+          <pre><code>GET /health
+→ {"ok": true}</code></pre>
+
+          <p><strong>Extract tables from a PDF</strong></p>
+<pre><code>POST /extract
+Content-Type: multipart/form-data
+
+Fields:
+  file   → PDF file (required)
+  output → "json" or "csv" (optional, default "csv")</code></pre>
+
           <p>Example JSON response:</p>
 <pre><code>{
   "rows": 4,
@@ -82,9 +121,22 @@ def home():
 }</code></pre>
         </div>
 
+        <div class="box">
+          <h2>Pricing (starter)</h2>
+          <ul>
+            <li><strong>Free</strong>: use the demo page for small files.</li>
+            <li><strong>$19/month</strong>: API access for up to 5,000 pages/month.<br>
+                (Manual onboarding for now – email to get access.)</li>
+          </ul>
+          <p class="small">
+            To discuss access or higher volumes, email
+            <a href="mailto:support@pdf2csvhub.com">support@pdf2csvhub.com</a>.
+          </p>
+        </div>
+
         <p class="small">
           Demo: <a href="/demo">/demo</a><br>
-          Support: <a href="mailto:support@pdf2csvhub.com">support@pdf2csvhub.com</a>
+          Health: <code>/health</code> · API: <code>/extract</code>
         </p>
       </body>
     </html>
@@ -104,6 +156,7 @@ def demo():
           h1 { font-size: 24px; margin-bottom: 10px; }
           label { display: block; margin-top: 12px; }
           button { margin-top: 16px; padding: 8px 16px; }
+          .small { font-size: 13px; color: #555; margin-top: 24px; }
         </style>
       </head>
       <body>
@@ -127,7 +180,7 @@ def demo():
           <button type="submit">Convert</button>
         </form>
 
-        <p style="font-size: 13px; color: #555; margin-top: 24px;">
+        <p class="small">
           This form calls <code>POST /extract</code> on this same server.
         </p>
       </body>
